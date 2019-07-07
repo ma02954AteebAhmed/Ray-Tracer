@@ -1,21 +1,32 @@
 #include "image_plane.h"
 
-image_plane::image_plane(point position ,point Q , int p_width , int p_height , int width , int height)
+
+image_plane::image_plane(Vector4d position , Vector4d camera_position , int p_width , int p_height )
 {
+    // initializing the image plane position ( the center of image plane )
     this->position = position;
+
+    // dimensions of the image plane
     this->p_width = p_width;
-    this->width = width;
     this->p_height = p_height;
-    this->height = height;
-    this->Q = Q;
+
+    // the matrix that is used to store all virtual world vectors
+//    co_ordinates.resize(NoChange, p_width*p_height);
+
+    // initialzing the image plane virtual world vectors
+    image_init(camera_position);
 }
+
+image_plane::image_plane(){
+    cout << "auto constructor " << endl;
+};
 
 image_plane::~image_plane()
 {
     //dtor
 }
 
-bool image_plane::image_init(point camera_position)
+bool image_plane::image_init(Vector4d c_p) // expecting the default camera position;
 {
     // initializing the pixels with all blacks
     for (int i = 0 ; i < p_height ; i++)
@@ -29,31 +40,52 @@ bool image_plane::image_init(point camera_position)
         }
         image_pixels.push_back(temp);
     }
+//---------------------------------------------------------
 
-    // initializing the pixels rays in real world
-    double del = 0.1;
-    double half_del = 0.1/2;
-    double x = position.x;
-    double y = position.y;
-    double z = position.z;
-
+    // initializing the pixels coordinates in real world
+    double pixelNDC_x , pixelNDC_y , screen_x , screen_y;
+    int counter = 0;
     for (int i = 0 ; i < p_height ; i++)
     {
         std::vector<line> temp;
 
-        // for efficient operation
-        double y_del = i*del;
-        double x_del = 0;
+        pixelNDC_y = ( i + 0.5 ) / p_height;
+        screen_y = 1 - 2*pixelNDC_y;
+
 
         for (int j = 0 ; j < p_width ; j++)
         {
-            x_del += del;
-            point temp_mid_point = { x + x_del + half_del , y + y_del + half_del , z };
-            line temp_line = line( camera_position , temp_mid_point);
-            temp.push_back(temp_line);
+            pixelNDC_x = ( j + 0.5 ) / p_width;
+            screen_x = 2*pixelNDC_x - 1;
+
+            Vector4d p_l (screen_x , screen_y , this->position[2], 1); // p_l = pixel_location
+            line ray(c_p , p_l);
+
+            // inserting in matrix
+  /*
+            for ( int k = 0; k < 4 ; k++)
+            {
+                co_ordinates(counter) = p_l[k];
+                counter+= 1;
+            }
+    */
+            // inserting the ray in temp vector
+            temp.push_back(ray);
         }
-        image_rays.push_back(temp);
+        // pushing  in the primary ray vector
+        image_rays.push_back(temp);;
     }
-    std::cout << image_rays.size() << std::endl;
+
     return true;
+}
+
+void image_plane::print_co_ordinates()
+{
+    for (auto i : image_rays)
+    {
+        for (auto j : i )
+        {
+            cout << j.to_point << endl;
+        }
+    }
 }

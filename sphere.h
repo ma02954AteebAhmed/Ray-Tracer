@@ -1,16 +1,17 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 #include <iostream>
-#include "point.h"
+#include <Eigen/Dense>
 #include "line.h"
 #include "object.h"
+
 
 class sphere : public object
 {
     public:
-        sphere(vector center , double radius);
+        sphere(Vector4d center , double radius);
         virtual ~sphere();
-        vector* collision_detection( line* ray );
+        Vector4d* collision_detection( line* ray );
 
     protected:
 
@@ -18,7 +19,7 @@ class sphere : public object
         double radius;
         double radius_square;
         double radius_inverse;
-        vector center;
+        Vector4d center;
 
 };
 

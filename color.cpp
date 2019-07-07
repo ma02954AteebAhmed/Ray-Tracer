@@ -2,7 +2,14 @@
 
 color::color()
 {
-    //ctor
+    val[0] = 0;
+    val[1] = 0;
+    val[2] = 0;
+}
+
+color::color(Vector3d col)
+{
+    val = col;
 }
 
 color::~color()
@@ -12,7 +19,8 @@ color::~color()
 
 color::color(int r , int g , int b)
 {
-    this->r = r;
-    this->g = g;
-    this->b = b;
+    val[0] = r;
+    val[1] = g;
+    val[2] = b;
 }
+

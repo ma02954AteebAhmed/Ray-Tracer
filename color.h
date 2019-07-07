@@ -1,6 +1,7 @@
 #ifndef COLOR_H
 #define COLOR_H
-
+#include <Eigen/Dense>
+using namespace Eigen;
 
 class color
 {
@@ -8,8 +9,9 @@ class color
         color();
         virtual ~color();
         color(int r, int g , int b);
+        color( Vector3d );
         //color information
-        int r , g , b;
+        Vector3d val;
 
     protected:
 
