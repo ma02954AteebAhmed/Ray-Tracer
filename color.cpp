@@ -7,7 +7,7 @@ color::color()
     val[2] = 0;
 }
 
-color::color(Vector3d col)
+color::color(Vector3i col)
 {
     val = col;
 }

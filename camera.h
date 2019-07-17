@@ -7,15 +7,15 @@ using namespace Eigen;
 class camera
 {
     public:
-        camera(int , int , Vector4d);
+        camera(image_plane* , Vector3d);
         virtual ~camera();
         Matrix4d translation_matrix ;
 
         // to control translation of image plane and camera
-        void translate( Vector4d );
+        void translate( Vector3d );
 
         // camera default position
-        Vector4d camera_position;
+        Vector3d camera_position;
 
         //  transition Matrix it is used to store intermediate results when
         //  applying translation to image plane

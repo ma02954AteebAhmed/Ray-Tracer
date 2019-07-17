@@ -1,6 +1,6 @@
 #include "sphere.h"
 
-sphere::sphere(Vector4d center , double radius)
+sphere::sphere(Vector3d center , double radius)
 {
     this->center = center;
     this->radius = radius;
@@ -13,15 +13,15 @@ sphere::~sphere()
     //dtor
 }
 
-Vector4d* sphere::collision_detection( line* ray)
+Vector3d* sphere::collision_detection( line* ray)
 {
-   Vector4d* intersection_point = nullptr;
+   Vector3d* intersection_point = nullptr;
 
     // we are going to use the geometric approach..
     // step 1: Find if the ray's origin is outside the sphere.
-    Vector4d oc = { center[0] - ray->origin[0] , center[1] - ray->origin[1] , center[2] - ray->origin[2] , 1};
+    Vector3d oc = center - ray->origin;
    // dot product
-    double L2oc = oc[0]*oc[0] + oc[1]*oc[1] + oc[2]*oc[2];
+    double L2oc = oc.dot(oc);
     // step 2: Find the closest approach of the ray to the sphere's center.
 
     bool flag = false; // to check if ray is inside the sphere or outside
@@ -31,12 +31,12 @@ Vector4d* sphere::collision_detection( line* ray)
         flag = true;
     }
 
-    // here we find the closest approach to the spheres center
+    // now we find the closest approach to the spheres center
 
     // MAKING THE DIRECTION VECTOR UNIT VECTOR
 
     ray->normalize();
-    double tca = oc[0]*ray->normalize_direction[0] + oc[1]*ray->normalize_direction[1] + oc[2]*ray->normalize_direction[2];
+    double tca = oc.dot(ray->normalize_direction);
     if (tca < 0) return nullptr ; // step 3: if tca < 0 it means spheres center is behind rays origin hence they will never intersect
     else{
         // step 4: Else, find the squared distance from the closest approach to the sphere surface.
@@ -46,13 +46,13 @@ Vector4d* sphere::collision_detection( line* ray)
                 if (flag == true)
                     {double t = tca + sqrt(t2hc); // step 6: Else, from the above, find the ray/surface distance.
                      // step 7:  Calculate the [xi yi zi] intersection coordinates.
-                    intersection_point = new Vector4d( ray->origin[0] + t*ray->direction[0] , ray->origin[1] + t*ray->direction[1] , ray->origin[2] + t*ray->direction[2] , 1 );
+                    intersection_point = new Vector3d( ray->origin[0] + t*ray->direction[0] , ray->origin[1] + t*ray->direction[1] , ray->origin[2] + t*ray->direction[2] );
 
                     }
                 else{
                     double t = tca - sqrt(t2hc);
                      // step 7:  Calculate the [xi yi zi] intersection coordinates.
-                    intersection_point = new Vector4d( ray->origin[0] + t*ray->direction[0] , ray->origin[1] + t*ray->direction[1] , ray->origin[2] + t*ray->direction[2] , 1 );
+                    intersection_point = new Vector3d( ray->origin[0] + t*ray->direction[0] , ray->origin[1] + t*ray->direction[1] , ray->origin[2] + t*ray->direction[2] );
                     }
             }
         }

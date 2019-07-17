@@ -1,6 +1,6 @@
 #include "line.h"
 
-line::line(Vector4d start , Vector4d End)
+line::line(Vector3d start , Vector3d End)
 {
     this->origin = start;
     calc_direction(start , End);
@@ -22,12 +22,10 @@ line::~line()
     //dtor
 }
 
-void line::calc_direction(Vector4d start , Vector4d End)
+void line::calc_direction(Vector3d start , Vector3d End)
 {
-    this->direction[0] = End[0] - start[0];
-    this->direction[1] = End[1] - start[1];
-    this->direction[2] = End[2] - start[2];
-    this->direction[3] = 1;
+    this->direction = End - start;
+
 }
 
 void line::calc_direction(point start , point End)
@@ -35,7 +33,7 @@ void line::calc_direction(point start , point End)
 
 }
 
-void line::recreate(Vector4d start , Vector4d End)
+void line::recreate(Vector3d start , Vector3d End)
 {
     this->origin = start;
     calc_direction( start , End );
@@ -48,7 +46,7 @@ void line::normalize()
 {
     if (is_normalized == false)
     {
-        normalize_direction.block(0,0,3,1).normalize();
+        normalize_direction.normalize();
         is_normalized = true;
     }
     else{return;}

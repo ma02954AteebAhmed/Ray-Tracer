@@ -9,9 +9,9 @@ class color
         color();
         virtual ~color();
         color(int r, int g , int b);
-        color( Vector3d );
+        color( Vector3i );
         //color information
-        Vector3d val;
+        Vector3i val;
 
     protected:
 

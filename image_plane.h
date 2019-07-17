@@ -14,11 +14,11 @@ class image_plane
     public:
         image_plane();
 
-        image_plane(Vector4d position, Vector4d camera_position , int p_width , int p_height );
+        image_plane(Vector3d& top_left, Vector3d& top_right, Vector3d& bottom_left , Vector3d& camera_position , int p_width , int p_height );
         virtual ~image_plane();
 
         // procedure that initializes the image plane
-        bool image_init(Vector4d);
+        bool image_init(Vector3d& , Vector3d& , Vector3d& , Vector3d&);
 
         // procedure to print the rays vectors
         void print_co_ordinates();
@@ -30,27 +30,16 @@ class image_plane
 
         int p_width, p_height;
 
-
         // starting point
-        Vector4d position;
-
+        Vector3d position;
 
         // data structure to hold the pixels = vectors of vectors
         std::vector < std::vector <color> > image_pixels;
 
     protected:
-
     private:
 
         // resolution
-
-
-
         // data structure to hold the position values of pixels in real world
-
-
 };
-
-
-
 #endif // IMAGE_PLANE_H

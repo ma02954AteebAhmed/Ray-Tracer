@@ -10,26 +10,26 @@ using std::endl;
 class line
 {
     public:
-        line( Vector4d , Vector4d );
+        line( Vector3d , Vector3d );
         line(point , point );
         virtual ~line();
         line(){};
 
         // for calculating the direction vector
-        void calc_direction(Vector4d start, Vector4d End);
+        void calc_direction(Vector3d start, Vector3d End);
         void calc_direction(point start, point End);
         bool is_normalized ;
         // direction vector
-        Vector4d direction;
-        Vector4d normalize_direction;
+        Vector3d direction;
+        Vector3d normalize_direction;
         // starting position of line
-        Vector4d origin;
+        Vector3d origin;
         // ending point of line
-        Vector4d to_point;
+        Vector3d to_point;
 
 
         // to be used when ray needs to be changed
-        void recreate(Vector4d , Vector4d);
+        void recreate(Vector3d , Vector3d);
         void normalize();
 
     protected:

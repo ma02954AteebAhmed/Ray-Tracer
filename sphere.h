@@ -9,9 +9,9 @@
 class sphere : public object
 {
     public:
-        sphere(Vector4d center , double radius);
+        sphere(Vector3d center , double radius);
         virtual ~sphere();
-        Vector4d* collision_detection( line* ray );
+        Vector3d* collision_detection( line* ray );
 
     protected:
 
@@ -19,7 +19,7 @@ class sphere : public object
         double radius;
         double radius_square;
         double radius_inverse;
-        Vector4d center;
+        Vector3d center;
 
 };
 
