@@ -1,6 +1,6 @@
 #include "sphere.h"
 
-sphere::sphere(Vector3d center , double radius)
+sphere::sphere(Vector3d center , double radius) : object()
 {
     this->center = center;
     this->radius = radius;
@@ -13,14 +13,14 @@ sphere::~sphere()
     //dtor
 }
 
-Vector3d* sphere::collision_detection( line* ray)
+Vector3d* sphere::collision_detection( line* ray , Vector3i& color)
 {
    Vector3d* intersection_point = nullptr;
 
     // we are going to use the geometric approach..
     // step 1: Find if the ray's origin is outside the sphere.
     Vector3d oc = center - ray->origin;
-   // dot product
+    // dot product
     double L2oc = oc.dot(oc);
     // step 2: Find the closest approach of the ray to the sphere's center.
 
@@ -57,9 +57,15 @@ Vector3d* sphere::collision_detection( line* ray)
             }
         }
    // step 8: Calculate the normal at the intersection point.
-    //(*intersection_point)[0] = ( (*intersection_point)[0]  - center[0] )* radius_inverse;
-    //(*intersection_point)[1] = ( (*intersection_point)[1]  - center[1] )* radius_inverse;
-    //(*intersection_point)[2] = ( (*intersection_point)[2]  - center[2] )* radius_inverse;
+    (*intersection_point)[0] = ( (*intersection_point)[0]  - center[0] ) * radius_inverse;
+    (*intersection_point)[1] = ( (*intersection_point)[1]  - center[1] ) * radius_inverse;
+    (*intersection_point)[2] = ( (*intersection_point)[2]  - center[2] ) * radius_inverse;
+
+    // FOR VISUALIZING THE NORMALS
+    // assigning color to that pixel
+    color[0] = (((*intersection_point)[0] +1 )*0.5) * 255 ;
+    color[1] = (((*intersection_point)[1] +1 )*0.5) * 255 ;
+    color[2] = (((*intersection_point)[2] +1 )*0.5) * 255 ;
 
     return intersection_point;
 }

@@ -12,6 +12,8 @@ using std::endl ;
 class image_plane
 {
     public:
+
+        // METHODS
         image_plane();
 
         image_plane(Vector3d& top_left, Vector3d& top_right, Vector3d& bottom_left , Vector3d& camera_position , int p_width , int p_height );
@@ -23,6 +25,8 @@ class image_plane
         // procedure to print the rays vectors
         void print_co_ordinates();
 
+
+        // ATTRIBUTES
         std::vector < std::vector <line> > image_rays;
 
         // storing this matrix for efficient multiplication

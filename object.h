@@ -9,7 +9,7 @@ class object
         object();
         virtual ~object();
         // for collision detection between ray and object
-        virtual point collision_detection(line ray){};
+        virtual Vector3d* collision_detection(line* ray , Vector3i& color){};
 
     protected:
 
