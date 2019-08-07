@@ -8,3 +8,4 @@ The following things are implemented:
 5) Sphere with normal vector visualization using color-coding.
 6) The program now reads meshes from .ply2 files.
 7) The signature of intersect() function is changed as per requirement.
+8) The definition of plane is fixed.
