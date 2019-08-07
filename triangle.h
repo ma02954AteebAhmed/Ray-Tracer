@@ -10,11 +10,11 @@ using namespace std;
 class triangle : public object
 {
     public:
-        triangle();
+        triangle(Vector3d , Vector3d , Vector3d);
         virtual ~triangle();
 
         //METHODS
-        Vector3d* collision_detection( line* ray , Vector3i& color );
+        bool intersect( line* ray , Vector3i& color , double& t_out );
 
 
         // DATA MEMBERS

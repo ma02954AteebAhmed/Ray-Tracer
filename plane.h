@@ -14,7 +14,7 @@ class plane : public object
     public:
         plane( Vector3d& normal , double d );
         virtual ~plane();
-        Vector3d* collision_detection( line* ray , Vector3i& color);
+        bool intersect( line* ray , Vector3i& color , double* t);
 
 
         // plane's normal vector

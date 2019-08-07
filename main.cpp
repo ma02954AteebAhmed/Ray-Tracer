@@ -15,7 +15,9 @@
 #include "plane.h"
 #include "triangle.h"
 #include "windows.h"
+#include "file_reader.h"
 using namespace Eigen;
+
 using std::cout;
 using std::endl;
 
@@ -27,21 +29,30 @@ void save_ppm_image(camera* c);
 int main()
 {
     // starting point of image plane
-    Vector3d camera_position(0,0,10);
+    Vector3d camera_position(0,0,40);
 
     // initializing the image plane
-    Vector3d top_left(-1,1,9);
-    Vector3d top_right(1,1,9);
-    Vector3d bottom_left(-1,-1,9);
+    Vector3d top_left(-1,1,39);
+    Vector3d top_right(1,1,39);
+    Vector3d bottom_left(-1,-1,39);
 
-    image_plane im = image_plane(top_left, top_right, bottom_left , camera_position, 500 , 500 );
+    image_plane im = image_plane(top_left, top_right, bottom_left , camera_position, 800 , 800 );
+
+    // read ply
+    file_reader f;
+    // stage
+    scene stage;
+
+    f.read_ply2("C:\\Users\\ateeb\\Desktop\\Bo Qian c++\\ray tracer\\3d_cosine.ply2" , &stage);
+
+
 
     // camera position
     camera canon_5d_mk1 = camera(&im ,camera_position);
 
     // sphere
     Vector3d c = {0,0,-5};
-    sphere s = sphere(c , 5);
+    sphere s = sphere(c , 3);
     Vector3d c1 = {0,0,-7};
     sphere s1 = sphere(c1 , 0.5);
 
@@ -49,24 +60,24 @@ int main()
     plane p(p_n , -5);
 
     // creating a triangle
-    triangle t;
-    //vertices
-    t.A[0] = 10; t.A[1] = 0; t.A[2] = -5;
+    Vector3d A = {4,0,-5};
+    Vector3d B = {3.5,4,-5};
+    Vector3d C = {-3,-2,-5};
+    triangle t(A,B,C);
 
-    t.C[0] = 3.5; t.C[1] = 10; t.C[2] = -5;
+    Vector3d A1 = {5,0,-8};
+    Vector3d B1 = {6.5,4,-8};
+    Vector3d C1 = {-3,-4,-6};
+    triangle t1(A1,B1,C1);
 
-    t.B[0] = -3; t.B[1] = -2; t.B[2] = -5;
 
-    // normals
-    t.normal[0] = 0; t.normal[1] = 0; t.normal[2] = -1;
-    t.d = -5;
 
-    // stage
-    scene stage;
-    stage.add_object(&p);
+    //stage.add_object(&p);
     //stage.add_object(&s);
-    stage.add_object(&t);
+    //stage.add_object(&t);
 
+    //stage.add_object(&t1);
+    //stage.add_object(&s);
     // vertices of triangle
 
     //sphere A =  sphere(Vector3d(0,0,-5) , 3);
@@ -98,22 +109,36 @@ int main()
 void ray_cast(camera* c , scene* s)
 {
     int counter = 0;
-    Vector3d* res;
+    bool hit = false;
 
-    for (auto& o : s->elements)
+    for(int i = 0 ; i < c->img->p_height ; i++)
     {
-        for(int i = 0 ; i < c->img->p_height ; i++)
+        for (int j = 0 ; j < c->img->p_width ; j++)
         {
-            for (int j = 0 ; j < c->img->p_width ; j++)
+            // detect the closest collision
+            double t = 0; Vector3i closest_object_color(0,0,0); double current_min = 9638524741;
+            for (auto& o : s->elements)
             {
-                res = o->collision_detection( &c->img->image_rays[i][j] , c->img->image_pixels[i][j].val);
-                if (res != nullptr)
+                hit = o->intersect( &c->img->image_rays[i][j] , c->img->image_pixels[i][j].val, t);
+                if (hit == true)
                 {
-                    //assigning the color
                     counter += 1;
+                    if (current_min > t)
+                    {
+                        current_min = t;
+                        closest_object_color = c->img->image_pixels[i][j].val;
+                    }
                 }
             }
+            // assigning the color of closest object
+            c->img->image_pixels[i][j].val = closest_object_color;
+            /*if (hit == true){
+                cout << i<< " , " << j << " , " << current_min << endl;
+                cout << c->img->image_rays[i][j].direction << endl;
+            }*/
+
         }
+        cout << i << " "<< endl;
     }
     cout << "# of intersections : " << counter << endl;
     return ;

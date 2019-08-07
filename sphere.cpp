@@ -13,10 +13,10 @@ sphere::~sphere()
     //dtor
 }
 
-Vector3d* sphere::collision_detection( line* ray , Vector3i& color)
+bool sphere::intersect( line* ray , Vector3i& color , double* t_out)
 {
-   Vector3d* intersection_point = nullptr;
-
+    Vector3d* intersection_point = nullptr;
+    bool hit = false;
     // we are going to use the geometric approach..
     // step 1: Find if the ray's origin is outside the sphere.
     Vector3d oc = center - ray->origin;
@@ -37,22 +37,24 @@ Vector3d* sphere::collision_detection( line* ray , Vector3i& color)
 
     ray->normalize();
     double tca = oc.dot(ray->normalize_direction);
-    if (tca < 0) return nullptr ; // step 3: if tca < 0 it means spheres center is behind rays origin hence they will never intersect
+    if (tca < 0) return hit ; // step 3: if tca < 0 it means spheres center is behind rays origin hence they will never intersect
     else{
         // step 4: Else, find the squared distance from the closest approach to the sphere surface.
         double t2hc = radius_square - L2oc + pow(tca,2);
-        if (t2hc < 0){return nullptr ;} // step 5: If the value is negative, the ray misses the sphere.
+        if (t2hc < 0){return hit ;} // step 5: If the value is negative, the ray misses the sphere.
         else{
                 if (flag == true)
-                    {double t = tca + sqrt(t2hc); // step 6: Else, from the above, find the ray/surface distance.
+                    {
+                    double t = tca + sqrt(t2hc); // step 6: Else, from the above, find the ray/surface distance.
                      // step 7:  Calculate the [xi yi zi] intersection coordinates.
                     intersection_point = new Vector3d( ray->origin[0] + t*ray->direction[0] , ray->origin[1] + t*ray->direction[1] , ray->origin[2] + t*ray->direction[2] );
-
+                    hit = true;
                     }
                 else{
                     double t = tca - sqrt(t2hc);
                      // step 7:  Calculate the [xi yi zi] intersection coordinates.
                     intersection_point = new Vector3d( ray->origin[0] + t*ray->direction[0] , ray->origin[1] + t*ray->direction[1] , ray->origin[2] + t*ray->direction[2] );
+                    hit = true;
                     }
             }
         }
@@ -67,5 +69,5 @@ Vector3d* sphere::collision_detection( line* ray , Vector3i& color)
     color[1] = (((*intersection_point)[1] +1 )*0.5) * 255 ;
     color[2] = (((*intersection_point)[2] +1 )*0.5) * 255 ;
 
-    return intersection_point;
+    return hit;
 }
