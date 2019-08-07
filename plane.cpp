@@ -1,12 +1,14 @@
 #include "plane.h"
 
-plane::plane(Vector3d& normal , double d) : object()
+plane::plane(Vector3d& A , Vector3d& B , Vector3d& C) : object()
 {
-    this->normal = normal;
-    this->d = d;
+    // calculating the normal
+    this->normal = (A-B).cross(B-C);
+    this->normal.normalize();
 
-    //normalizing the normal vector
-    normal.normalize();
+    // calculating the dot product
+    double d = A.dot(normal);
+
 }
 
 plane::~plane()

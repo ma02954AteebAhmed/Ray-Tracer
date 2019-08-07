@@ -56,8 +56,8 @@ int main()
     Vector3d c1 = {0,0,-7};
     sphere s1 = sphere(c1 , 0.5);
 
-    Vector3d p_n = {0,0,-1};
-    plane p(p_n , -5);
+    //Vector3d p_n = {0,0,-1};
+    //plane p();
 
     // creating a triangle
     Vector3d A = {4,0,-5};

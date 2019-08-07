@@ -12,7 +12,7 @@ using namespace std;
 class plane : public object
 {
     public:
-        plane( Vector3d& normal , double d );
+        plane( Vector3d& , Vector3d& , Vector3d& );
         virtual ~plane();
         bool intersect( line* ray , Vector3i& color , double* t);
 
@@ -21,6 +21,8 @@ class plane : public object
         Vector3d normal;
         // distance of plane from the origin
         double d;
+
+
 
     protected:
 
