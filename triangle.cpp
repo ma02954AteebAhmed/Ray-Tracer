@@ -10,14 +10,18 @@ triangle::triangle(Vector3d A , Vector3d  B , Vector3d C )
     this->normal.normalize();
 
     // calculating d
-    this->d = (B-A).dot(this->normal);
-
+    this->d = A.dot(this->normal);
 
 }
 
 triangle::~triangle()
 {
     //dtor
+}
+
+void triangle::set_color(Vector3i& v)
+{
+    this->color = v;
 }
 
 bool triangle::intersect( line* ray , Vector3i& color , double& t_out )
@@ -29,6 +33,9 @@ bool triangle::intersect( line* ray , Vector3i& color , double& t_out )
         // first we find v_d i.e. dot product of ray's direction vector and plane's normal vector
     // if v_d = 0 it means the ray is parallel to plane and hence no intersection will occur
 
+
+
+
     Vector3d P;
     double t;
     double v_d = ray->direction.dot( this->normal );
@@ -37,7 +44,7 @@ bool triangle::intersect( line* ray , Vector3i& color , double& t_out )
     else{
         // since the ray is not parallel to plane, we can proceed furthur
         // now we will find the dot product of plane's normal and ray's origin + d
-        double v_o = -1 * ( ray->origin.dot(this->normal) + this->d );
+        double v_o =  this->d - ray->origin.dot(this->normal) ;
 
         // now we calculate the value of "t"
         t = v_o / v_d;
@@ -46,9 +53,7 @@ bool triangle::intersect( line* ray , Vector3i& color , double& t_out )
         if (t < 0) {return hit;}
         else{
             // find the co-ordinates of the intersection
-            P[0] =  ray->origin[0] + t*ray->direction[0];
-            P[1] =  ray->origin[1] + t*ray->direction[1];
-            P[2] =  ray->origin[2] + t*ray->direction[2];
+            P = ray->origin + t * ray->direction;
             }
         }
     // the above code will return the vector "intersection".
@@ -105,11 +110,25 @@ bool triangle::intersect( line* ray , Vector3i& color , double& t_out )
 
     if ((u >= 0) && (v >= 0) && (u + v < 1))
     {
-        color[0] = u*255;
-        color[1] = v*255;
-        color[2] = (1-u-v)*255;
+        color[0] = this->color[0];//u*255;
+        color[1] = this->color[1];//20;//v*255;
+        color[2] = this->color[2];//160;//(1-u-v)*255;
         hit = true;
         t_out = t;
+/*
+        //debugging
+        cout << fixed << showpoint;
+        cout << std::setprecision(5);
+        cout << "****************************************" << endl;
+        cout << "ray origin : "  << ray->origin << endl;
+        cout << "ray direction : " << ray->direction << endl;
+        cout << "ray end : " << ray->to_point << endl;
+        cout << "P: " << P <<endl;
+        cout << "normal: " << normal << endl;
+        cout << "d: " << d << endl;
+        cout << "t: " << t << endl;
+        // //////////////////////////////////////////////////////////////
+*/
         return hit;
     }
     else {return hit;}

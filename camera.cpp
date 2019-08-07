@@ -6,6 +6,7 @@ camera::camera(image_plane* img , Vector3d camera_position = Vector3d(0,0,0))
     // default camera position
     this->camera_position = camera_position;
 
+    /*
     // initializing the matrix for translation
     translation_matrix << 1,0,0,0,
                           0,1,0,0,
@@ -14,9 +15,12 @@ camera::camera(image_plane* img , Vector3d camera_position = Vector3d(0,0,0))
 
     // initializing the transition matrix
     //transition_mat.resize(NoChange , p_height*p_width);
+    */
 
     // finally initializing the image plane..
     this->img = img;
+
+    // image plane is now the property of camera
 }
 
 camera::~camera()

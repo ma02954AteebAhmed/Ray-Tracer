@@ -13,7 +13,7 @@ sphere::~sphere()
     //dtor
 }
 
-bool sphere::intersect( line* ray , Vector3i& color , double* t_out)
+bool sphere::intersect( line* ray , Vector3i& color , double& t_out)
 {
     Vector3d* intersection_point = nullptr;
     bool hit = false;
@@ -29,15 +29,19 @@ bool sphere::intersect( line* ray , Vector3i& color , double* t_out)
     {
         // the rays origin lies inside the sphere !! handle it
         flag = true;
+
     }
 
     // now we find the closest approach to the spheres center
 
     // MAKING THE DIRECTION VECTOR UNIT VECTOR
 
-    ray->normalize();
-    double tca = oc.dot(ray->normalize_direction);
-    if (tca < 0) return hit ; // step 3: if tca < 0 it means spheres center is behind rays origin hence they will never intersect
+    //ray->normalize();
+    double tca = oc.dot(ray->direction);
+
+    if (tca < 0){
+        cout << "tca: " << tca << endl;
+        return hit ;} // step 3: if tca < 0 it means spheres center is behind rays origin hence they will never intersect
     else{
         // step 4: Else, find the squared distance from the closest approach to the sphere surface.
         double t2hc = radius_square - L2oc + pow(tca,2);
@@ -68,6 +72,6 @@ bool sphere::intersect( line* ray , Vector3i& color , double* t_out)
     color[0] = (((*intersection_point)[0] +1 )*0.5) * 255 ;
     color[1] = (((*intersection_point)[1] +1 )*0.5) * 255 ;
     color[2] = (((*intersection_point)[2] +1 )*0.5) * 255 ;
-
+    //printf("what?");
     return hit;
 }

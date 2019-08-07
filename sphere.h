@@ -13,7 +13,7 @@ class sphere : public object
     public:
         sphere(Vector3d center , double radius);
         virtual ~sphere();
-        bool intersect( line* ray , Vector3i& color , double* t);
+        bool intersect( line* ray , Vector3i& color , double& t);
 
     protected:
     private:

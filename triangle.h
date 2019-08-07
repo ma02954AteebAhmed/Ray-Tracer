@@ -4,6 +4,7 @@
 #include <iostream>
 #include "line.h"
 #include "object.h"
+#include <iomanip>
 using namespace Eigen;
 using namespace std;
 
@@ -27,6 +28,11 @@ class triangle : public object
         // barycentric-cooridnates
         double u,v,w ;
 
+        // triangle color
+        Vector3i color;
+
+        // funcs
+        void set_color(Vector3i& );
 
     protected:
 

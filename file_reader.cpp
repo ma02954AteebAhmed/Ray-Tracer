@@ -64,6 +64,8 @@ triangle* file_reader::string_to_face( string& s , std::vector<Eigen::Vector3d>&
     }
 
     triangle* t = new triangle( v[index[0]] , v[index[1]] , v[index[2]] );
+    Vector3i col(10,20,150);
+    t->set_color(col);
     return t;
 
 }

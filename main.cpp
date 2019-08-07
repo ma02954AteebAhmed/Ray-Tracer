@@ -29,14 +29,14 @@ void save_ppm_image(camera* c);
 int main()
 {
     // starting point of image plane
-    Vector3d camera_position(0,0,40);
+    Vector3d camera_position(0,0,50);
 
     // initializing the image plane
-    Vector3d top_left(-1,1,39);
-    Vector3d top_right(1,1,39);
-    Vector3d bottom_left(-1,-1,39);
+    Vector3d top_left(-1,1,49);
+    Vector3d top_right(1,1,49);
+    Vector3d bottom_left(-1,-1,49);
 
-    image_plane im = image_plane(top_left, top_right, bottom_left , camera_position, 800 , 800 );
+    image_plane im = image_plane(top_left, top_right, bottom_left , camera_position, 100 , 100 );
 
     // read ply
     file_reader f;
@@ -49,34 +49,40 @@ int main()
 
     // camera position
     camera canon_5d_mk1 = camera(&im ,camera_position);
-
+/*
     // sphere
-    Vector3d c = {0,0,-5};
+    Vector3d c = {0,0,40};
     sphere s = sphere(c , 3);
-    Vector3d c1 = {0,0,-7};
+    Vector3d c1 = {0,0,0};
     sphere s1 = sphere(c1 , 0.5);
-
+*/
     //Vector3d p_n = {0,0,-1};
     //plane p();
-
+/*
     // creating a triangle
-    Vector3d A = {4,0,-5};
-    Vector3d B = {3.5,4,-5};
-    Vector3d C = {-3,-2,-5};
+    Vector3d A = {16,0,25};
+    Vector3d B = {15,12,25};
+    Vector3d C = {-10,-11,25};
     triangle t(A,B,C);
+    Vector3i col(5,10,150);
+    t.set_color(col);
 
-    Vector3d A1 = {5,0,-8};
-    Vector3d B1 = {6.5,4,-8};
-    Vector3d C1 = {-3,-4,-6};
+
+    Vector3d A1 = {20,0,27};
+    Vector3d B1 = {6.5,4,27};
+    Vector3d C1 = {-3,-4,27};
     triangle t1(A1,B1,C1);
-
+    Vector3i col1(100,140,0);
+    t1.set_color(col1);
+*/
 
 
     //stage.add_object(&p);
-    //stage.add_object(&s);
-    //stage.add_object(&t);
 
+    //stage.add_object(&t);
+    //stage.add_object(&s1);
     //stage.add_object(&t1);
+    //cout << stage.object_count() << endl;
     //stage.add_object(&s);
     // vertices of triangle
 
@@ -117,6 +123,7 @@ void ray_cast(camera* c , scene* s)
         {
             // detect the closest collision
             double t = 0; Vector3i closest_object_color(0,0,0); double current_min = 9638524741;
+
             for (auto& o : s->elements)
             {
                 hit = o->intersect( &c->img->image_rays[i][j] , c->img->image_pixels[i][j].val, t);
@@ -125,20 +132,23 @@ void ray_cast(camera* c , scene* s)
                     counter += 1;
                     if (current_min > t)
                     {
+                        //cout << "t: " << t << endl;
                         current_min = t;
                         closest_object_color = c->img->image_pixels[i][j].val;
+                        //cout << "color : " << closest_object_color << endl;
                     }
                 }
             }
             // assigning the color of closest object
             c->img->image_pixels[i][j].val = closest_object_color;
             /*if (hit == true){
-                cout << i<< " , " << j << " , " << current_min << endl;
-                cout << c->img->image_rays[i][j].direction << endl;
+                //cout <<"t: "<< current_min << endl;
+                //cout << i<< " , " << j << " , " << current_min << endl;
+                //cout << c->img->image_rays[i][j].direction << endl;
             }*/
 
         }
-        cout << i << " "<< endl;
+        //cout << i << " "<< endl;
     }
     cout << "# of intersections : " << counter << endl;
     return ;

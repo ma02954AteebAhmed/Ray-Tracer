@@ -3,10 +3,13 @@
 line::line(Vector3d start , Vector3d End)
 {
     this->origin = start;
-    calc_direction(start , End);
+    //calc_direction(start , End);
+    this->direction = End - start;
+    this->direction.normalize();
     this->to_point = End;
-    is_normalized = false;
-    this->normalize_direction = this->direction;
+
+    //is_normalized = false;
+    //this->normalize_direction = this->direction;
 }
 
 line::line(point start , point End)
