@@ -6,3 +6,5 @@ The following things are implemented:
 3) Triangle primitive is added, with barycentric co-ordinates and color mapping.
 4) Plane is added.
 5) Sphere with normal vector visualization using color-coding.
+6) The program now reads meshes from .ply2 files.
+7) The signature of intersect() function is changed as per requirement.
