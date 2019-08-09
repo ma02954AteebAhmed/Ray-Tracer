@@ -40,6 +40,7 @@ bool file_reader::read_ply2( string path , scene* s )
    for (int i = 0 ; i < num_faces ; i++)
    {
        getline(f,line);
+       line += ' ';
        s->add_object( string_to_face(line , vertex_list) );
    }
 
